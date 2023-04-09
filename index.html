@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>US State Map</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <style>
+      .states {
+        fill: none;
+        stroke: #0b03034b;
+        stroke-linejoin: round;
+      }
+      
+      svg {
+        display: block;
+        margin: auto;
+      }
+      
+      body {
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="960" height="600"></svg>
+    <script>
+      var svg = d3.select("svg"),
+          width = +svg.attr("width"),
+          height = +svg.attr("height");
+
+      var path = d3.geoPath();
+
+      d3.json("https://d3js.org/us-10m.v1.json").then(function(us) {
+        svg.append("g")
+            .attr("class", "states")
+          .selectAll("path")
+          .data(topojson.feature(us, us.objects.states).features)
+          .enter().append("path")
+            .attr("d", path);
+      });
+    </script>
+  </body>
+</html>
